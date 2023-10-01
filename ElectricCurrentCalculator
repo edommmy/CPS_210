@@ -1,0 +1,65 @@
+/* Description:
+ * Author: Edom Belayneh
+ * Date: 29/08/23
+ **/
+
+#include <math.h>
+#include <stdio.h>
+
+void calCurrent(double volt, double res, double induct, double cap) {
+  // Implement the current calculation here
+  double current = volt/sqrt((res*res) + pow(induct - cap, 2));
+  
+  printf("\n\nFor V = %.2f, R = %.2f, L = %.2f and C = %.2f, the Current I = %.2f", volt, res, induct, cap, current);
+  // Note the output requirement
+
+  return;
+}
+int main(void) {
+  // Implement the while loop and method call
+  
+  printf("This is an Electric Current Calculator!\n\n");
+  puts("Would you like to calculate your Electric Current? (Please enter y/n)");
+  
+  char choice = 'a';
+  
+  while (scanf("\n%c", &choice) == 1){
+   
+    
+    if(choice == 'y'){
+      printf("Please enter the Voltage: ");
+      double v = 0;
+      scanf("%lf", &v);
+    
+      printf("Please enter the Resistance: ");
+      double r = 0;
+      scanf("%lf", &r);
+    
+      printf("Please enter the Inductance: ");
+      double l = 0;
+      scanf("%lf", &l);
+    
+      printf("Please enter the Capacitance: ");
+      double c = 0;
+      scanf("%lf", &c);
+
+      calCurrent(v, r, l, c);
+
+      puts("\n\nWould you like to calculate your Electric Current? (Please enter y/n)");
+    }
+    
+    else if( choice == 'n'){
+      break;
+    }
+      
+    else{
+      puts("ERROR! Please re-enter the value!");
+      puts("\nWould you like to calculate your Electric Current? (Please enter y/n)");
+      continue;
+    }
+  
+  }
+  puts("Goodbye!");
+  
+  return 0;
+}
