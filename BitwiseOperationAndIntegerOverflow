@@ -1,0 +1,125 @@
+/* The goal of this program is to repeatedly
+* - Take user input n
+* - Display binary representation of n
+* - Calculate n!
+* - Display binary represetation of n!
+
+* The starting code is runnable. The main method has been implemented.
+ * Please read the main method to understand the workflow.
+ * ===============================================================
+ * Your job:
+ * * Complete the implementation of the getBinary method
+ * * Complete the implementation of the calculateFactorial method
+ * * Answer the following questions.
+ * * (Write your response right after the question.)
+ * * * Q1. What's the greatest value that an int type variable can hold? -
+ * * *        Answer: - 2147483647
+ * * * Q2. What's the biggest number n that we can calculate n! correctly
+ * * *     if the result of n! is stored in an int type variable? -
+ * * *        Answer: - The biggest number it can calculate is 12
+ * * * Q3. How to detect the integer overflow for the factorial result? -
+ * * *        Answer: - We can see that 12 is the last correct answer by using a
+calculator. the output fo 13! is wrong because the bits needed to store the
+value is more than 32. The maximum we have is 32 and therefore when we try to
+store more than 32 it malfunctions.
+ ===============================================================
+ * Stack Overflow
+ * Implement the calculateFactorial method recursively.
+ * What causes stack overflow?
+ *   Answer: exhausting memory by infinite recurssion
+ * ===============================================================
+ * Challenge yourself (optional):
+ * * How to ensure user enters a number that can be stored in int type variable
+ * n?
+ * * For example, if user enter a really big number, say, 999999999999999, it
+ * can't be stored into n correctly. How to detect the integer overflow?
+ *     Answer: to ensure that overflow doesnt occur we can use the following
+code:
+ *             we first need to add the limit.h library as well.
+ *             if (n > INT_MAX) {
+ *                   puts("Input too large. Please enter a smaller integer:");
+ *                   continue;
+ *               }
+ */
+#include <stdio.h>
+
+const int NUMBER_OF_BITS = 8 * sizeof(int);
+// Call resetArray whereever needed
+void resetArray(short arr[]) {
+  // reset the array elements to all 0s
+  for (int i = 0; i < NUMBER_OF_BITS; i++)
+    arr[i] = 0;
+}
+
+/* printArray: print numberOfElements in the argument integer array
+ */
+void printArray(short arr[], int numberOfElements) {
+  int i = 0;
+  for (; i < numberOfElements; i++) {
+    printf("%d", arr[i]);
+  }
+  puts(""); // new line
+}
+
+/*getBinary - get the binary representation of number into the array arr.
+ Arguments:	arr - the integer array to hold the binary representation
+                        number - the integer to get binary from
+                        numOfBits - the size of the arr and the number of bits
+for the binary Algorithm requirement: make use of bitwise shifting and masking
+to get the bit values for the number
+*/
+void getBinary(short arr[], int number, int numOfBits) {
+  int i = numOfBits - 1;
+  for (; i >= 0; i--) {
+    arr[i] = number & 01; // Apply mask 01 to add it to the array
+    number = number >> 1; // move number by 1 to the right
+  }
+}
+
+/* calculateFactorial of argument number n
+   Factorial of a positive integer n is defined as the product of all positive
+   integers less than or equal to n. Factorial zero is defined as equal to 1.
+*/
+int calculateFactorial(int n) {
+  int result = n;
+  if (n > 1) {
+    result *= calculateFactorial(n - 1);
+  }
+  return result;
+
+  // what should be the initial value?
+}
+
+int main(void) {
+  // Variables
+  short arr[NUMBER_OF_BITS]; // an integer array of short type, for binary
+                             // representation
+  int n = 0;                 // The user enter number n, need to calculate n!
+  int result = 0;            // result =  n!
+                             //
+  puts("Enter integer to calculate factorial.");
+  puts("Non-numeric input terminates the program.");
+  // Continually taking input and converting it to binary
+  while (scanf("%d", &n) == 1) { // if successfully read in ONE decimal integer
+    // Get binary representation of number n and display it
+    getBinary(arr, n, NUMBER_OF_BITS);
+    printf("n = %d,\t", n);
+    printArray(arr, NUMBER_OF_BITS);
+
+    if (n < 0) {
+      puts(
+          "No definition of factorial for negative number. Enter another one:");
+      continue;
+    }
+    // Calculate n!
+    result = calculateFactorial(n);
+    // Get binary representation of the result and display it
+    getBinary(arr, result, NUMBER_OF_BITS);
+    printf("%d! = %d,\t", n, result);
+    printArray(arr, NUMBER_OF_BITS);
+    puts("Enter number:");
+  }
+  puts("Bye!");
+
+  return 0;
+}
